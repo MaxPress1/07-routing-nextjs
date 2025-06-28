@@ -7,14 +7,26 @@ export interface NoteResponse {
   notes: Note[];
   totalPages: number;
 }
+
+interface FetchNotesParams {
+  search?: string;
+  page?: number;
+  perPage?: number;
+  tag?: string;
+}
+
 const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
-export async function fetchNotes(
-  page: number = 1,
-  search?: string
-): Promise<NoteResponse> {
+export async function fetchNotes({
+  page = 1,
+  search,
+  tag,
+}: FetchNotesParams): Promise<NoteResponse> {
+  const params: FetchNotesParams = { page, perPage: 12 };
+  if (search) params.search = search;
+  if (tag) params.tag = tag;
   const res = await axios.get<NoteResponse>("/notes", {
-    params: { page, perPage: 12, ...(search ? { search } : {}) },
+    params,
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/json",
