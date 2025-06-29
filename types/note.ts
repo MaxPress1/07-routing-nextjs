@@ -12,3 +12,7 @@ export interface NewNoteData {
   content: string;
   tag: string;
 }
+
+export interface NoteDetailsProps {
+  params: Promise<{ id: string }>;
+}

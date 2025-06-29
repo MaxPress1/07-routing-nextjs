@@ -1,23 +1,46 @@
 "use client";
 import Modal from "@/components/Modal/Modal";
-import NotePreview from "@/components/NotePreview/NotePreview";
-import { useParams, useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { fetchNoteById } from "@/lib/api";
+import css from "./NotePreview.module.css";
 
-export default function NotePreviewClient() {
-  const { id } = useParams<{ id: string }>();
+interface NotePreviewClientProps {
+  id: number;
+}
 
-  const newId = Number(id);
-
+export default function NotePreviewClient({ id }: NotePreviewClientProps) {
   const router = useRouter();
-
-  const onClose = useCallback(() => {
+  const handleGoBack = () => {
     router.back();
-  }, [router]);
+  };
+  const {
+    data: note,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
+  });
+  if (isLoading) return <p>Loading, please wait...</p>;
+
+  if (error || !note) return <p>Something went wrong.</p>;
 
   return (
-    <Modal onClose={onClose}>
-      <NotePreview id={newId} />
+    <Modal onClose={handleGoBack}>
+      <div className={css.container}>
+        <div className={css.item}>
+          <div className={css.header}>
+            <h2>{note.title}</h2>
+            <button className={css.backBtn} onClick={handleGoBack}>
+              Edit note
+            </button>
+          </div>
+          <p className={css.content}>{note.content}</p>
+          <p className={css.date}>{note.createdAt}</p>
+        </div>
+      </div>
     </Modal>
   );
 }

@@ -28,7 +28,7 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
   const trimmedSearch = debouncedSearchText.trim();
 
   const { data, isLoading, isSuccess, isError, error, isFetching } = useQuery({
-    queryKey: ["notes", page, trimmedSearch],
+    queryKey: ["notes", page, trimmedSearch, tag],
     queryFn: () => fetchNotes({ page, search: trimmedSearch, tag }),
     placeholderData: keepPreviousData,
     initialData: () => initialData,
