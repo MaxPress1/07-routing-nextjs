@@ -5,23 +5,22 @@ import { useRouter } from "next/navigation";
 import { fetchNoteById } from "@/lib/api";
 import css from "./NotePreview.module.css";
 
-type NotePreviewProps = {
-  id: string;
-};
+interface NotePreviewProps {
+  id: number;
+}
 
 export default function NotePreview({ id }: NotePreviewProps) {
   const router = useRouter();
   const handleGoBack = () => {
     router.back();
   };
-  const noteId = Number(id);
   const {
     data: note,
     isLoading,
     error,
   } = useQuery({
     queryKey: ["note", id],
-    queryFn: () => fetchNoteById(noteId),
+    queryFn: () => fetchNoteById(id),
     refetchOnMount: false,
   });
   if (isLoading) return <p>Loading, please wait...</p>;

@@ -19,7 +19,11 @@ export default function TagsMenu() {
         <ul className={css.menuList}>
           {tags.map((tag) => (
             <li className={css.menuItem} key={tag}>
-              <Link href={`/notes/filter/${tag}`} className={css.menuLink}>
+              <Link
+                href={`/notes/filter/${tag}`}
+                className={css.menuLink}
+                onClick={() => setIsOpen(false)}
+              >
                 {tag}
               </Link>
             </li>

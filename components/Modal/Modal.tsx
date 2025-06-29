@@ -1,19 +1,13 @@
-import { useEffect, useCallback, ReactNode } from "react";
+import { useEffect, ReactNode } from "react";
 import css from "./Modal.module.css";
 import { createPortal } from "react-dom";
-import { useRouter } from "next/navigation";
 
 interface NoteModalProps {
   children: ReactNode;
+  onClose: () => void;
 }
 
-export default function Modal({ children }: NoteModalProps) {
-  const router = useRouter();
-
-  const onClose = useCallback(() => {
-    router.back();
-  }, [router]);
-
+export default function Modal({ children, onClose }: NoteModalProps) {
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();

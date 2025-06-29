@@ -9,7 +9,7 @@ import Pagination from "@/components/Pagination/Pagination";
 import css from "./page.module.css";
 import { fetchNotes, NoteResponse } from "@/lib/api";
 import Loading from "../../../loading";
-import Error from "../../error";
+import Error from "./error";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import Modal from "@/components/Modal/Modal";
 
@@ -28,8 +28,8 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
   const trimmedSearch = debouncedSearchText.trim();
 
   const { data, isLoading, isSuccess, isError, error, isFetching } = useQuery({
-    queryKey: ["notes", page, trimmedSearch, debouncedSearchText],
-    queryFn: () => fetchNotes({ page, search: debouncedSearchText, tag }),
+    queryKey: ["notes", page, trimmedSearch],
+    queryFn: () => fetchNotes({ page, search: trimmedSearch, tag }),
     placeholderData: keepPreviousData,
     initialData: () => initialData,
   });
@@ -56,7 +56,7 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
           Create note +
         </button>
         {isModalOpen && (
-          <Modal>
+          <Modal onClose={() => setIsModalOpen(false)}>
             <NoteForm onClose={() => setIsModalOpen(false)} />
           </Modal>
         )}
