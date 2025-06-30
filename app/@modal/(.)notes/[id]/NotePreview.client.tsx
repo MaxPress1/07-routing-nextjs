@@ -35,11 +35,12 @@ export default function NotePreviewClient({ id }: NotePreviewClientProps) {
           <div className={css.header}>
             <h2>{note.title}</h2>
             <button className={css.backBtn} onClick={handleGoBack}>
-              Edit note
+              Back
             </button>
           </div>
           <p className={css.content}>{note.content}</p>
           <p className={css.date}>{note.createdAt}</p>
+          <p className={css.content}> {note.tag}</p>
         </div>
       </div>
     </Modal>
