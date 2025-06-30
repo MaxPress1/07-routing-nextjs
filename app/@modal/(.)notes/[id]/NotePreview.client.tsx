@@ -10,6 +10,7 @@ interface NotePreviewClientProps {
 }
 
 export default function NotePreviewClient({ id }: NotePreviewClientProps) {
+  const newId = Number(id);
   const router = useRouter();
   const handleGoBack = () => {
     router.back();
@@ -20,7 +21,7 @@ export default function NotePreviewClient({ id }: NotePreviewClientProps) {
     error,
   } = useQuery({
     queryKey: ["note", id],
-    queryFn: () => fetchNoteById(id),
+    queryFn: () => fetchNoteById(newId),
     refetchOnMount: false,
   });
   if (isLoading) return <p>Loading, please wait...</p>;
